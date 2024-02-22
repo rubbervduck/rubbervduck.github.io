@@ -52,15 +52,7 @@
  .text-secondary {
    color:#8CAAEE;
  }
- 
- .linkedin:hover {
-   color: #1a8cd8;
- }
- 
- .github:hover {
-   color: #a6d189;
- }
- 
+  
  .cursor {
    color: #f2d5cf;
  }
@@ -111,4 +103,10 @@
    }
  }
 
- 
+ .linkedin:hover {
+  color: #1a8cd8;
+}
+
+.github:hover {
+  color: #1a8cd8;
+}
