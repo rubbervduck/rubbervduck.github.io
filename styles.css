@@ -14,19 +14,115 @@ body {
     padding: 2rem;
 }
 
+/* Header Mario icon - Subtle game-like hover animations */
+.mario-header {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+/* Subtle hover effects */
+.mario-header:hover {
+    transform: scale(1.05);
+    background: rgba(74, 144, 226, 0.08);
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+}
+
+/* Very subtle pulse on hover */
+.mario-header:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid rgba(74, 144, 226, 0.3);
+    border-radius: 8px;
+    animation: subtlePulse 2s infinite;
+}
+
+/* Gentle bounce for the SVG on hover */
+.mario-header:hover svg {
+    animation: gentleBounce 1s ease-in-out infinite;
+}
+
+/* Subtle pulse animation */
+@keyframes subtlePulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.1;
+        transform: scale(1.02);
+    }
+}
+
+/* Gentle bounce animation */
+@keyframes gentleBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+/* Keep the original legs animation but make it more subtle */
+.mario-header svg {
+    width: 48px;
+    height: 48px;
+    animation: legsMove 0.8s steps(4) infinite;
+    transform-origin: center bottom;
+    transition: all 0.3s ease;
+}
+
+/* Original legs animation remains the same */
+@keyframes legsMove {
+    0% {
+        transform: translateY(0) scaleY(1);
+    }
+    25% {
+        transform: translateY(-2px) scaleY(0.95);
+    }
+    50% {
+        transform: translateY(0) scaleY(1);
+    }
+    75% {
+        transform: translateY(1px) scaleY(1.05);
+    }
+    100% {
+        transform: translateY(0) scaleY(1);
+    }
+}
+
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
-    margin-top: 1.5em;
-    margin-bottom: 0.2em; /* Reduced from 0.3em */
+h1, h2, h4, h5, h6 {
+    margin-top: 0.5em;
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+h3 {
+    margin-top: 1em;
+    margin-bottom: 0.2em;
     font-weight: 600;
 }
 
 h1 {
     font-size: 2.25rem;
+    margin-top: 0em;
+    margin-bottom: 0.2em;
+    text-align: left;
 }
 
 p {
-    margin-top: 0.1em; /* Reduced from 0.2em */
+    margin-top: 0.1em;
     margin-bottom: 1em;
 }
 
@@ -50,56 +146,430 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Spacing */
+/* Description style */
+.description {
+    color: #808080;
+}
+
+/* Game Container */
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    border: 3px solid #4a90e2;
+    border-radius: 15px;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #87CEEB 0%, #87CEEB 60%, #90EE90 60%, #90EE90 80%, #8B4513 80%, #8B4513 100%);
+    margin: 20px 0;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.game-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+.game-container.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.game-ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+    background: linear-gradient(to bottom, #8B4513, #654321);
+    border-top: 2px solid #5a3a1a;
+}
+
+/* Mario Character */
+.mario {
+    position: absolute;
+    bottom: 20%;
+    left: 50px;
+    width: 48px;
+    height: 48px;
+    transition: none;
+    z-index: 10;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+}
+
+.mario.jumping {
+    animation: jump 0.6s ease-in-out;
+}
+
+@keyframes jump {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-100px) rotate(-10deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+.mario svg {
+    width: 48px;
+    height: 48px;
+}
+
+/* Jump particles */
+.jump-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #FFD700;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: jumpParticle 0.6s ease-out forwards;
+}
+
+@keyframes jumpParticle {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0) translateY(-30px);
+        opacity: 0;
+    }
+}
+
+/* Obstacles */
+.obstacle {
+    position: absolute;
+    bottom: 20%;
+    width: 35px;
+    height: 60px;
+    background: linear-gradient(to bottom, #228B22, #006400);
+    border-radius: 8px 8px 0 0;
+    animation: moveLeft 2s linear infinite;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    border: 2px solid #1e6b1e;
+}
+
+.obstacle::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 10px;
+    background: #32CD32;
+    border-radius: 50%;
+}
+
+@keyframes moveLeft {
+    0% { right: -40px; }
+    100% { right: 100%; }
+}
+
+/* Coins */
+.coin {
+    position: absolute;
+    bottom: 35%;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    border-radius: 50%;
+    animation: moveLeft 3s linear infinite, coinSpin 1s linear infinite;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    border: 2px solid #FF8C00;
+}
+
+@keyframes coinSpin {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+}
+
+/* Clouds */
+.cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    animation: cloudMove 12s linear infinite;
+    opacity: 0.8;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+}
+
+.cloud1 {
+    width: 50px;
+    height: 20px;
+    top: 15%;
+    animation-delay: 0s;
+}
+
+.cloud1::before {
+    width: 25px;
+    height: 25px;
+    top: -12px;
+    left: 8px;
+}
+
+.cloud1::after {
+    width: 35px;
+    height: 25px;
+    top: -10px;
+    right: 8px;
+}
+
+.cloud2 {
+    width: 40px;
+    height: 15px;
+    top: 25%;
+    animation-delay: -6s;
+}
+
+.cloud2::before {
+    width: 20px;
+    height: 20px;
+    top: -10px;
+    left: 5px;
+}
+
+.cloud2::after {
+    width: 25px;
+    height: 20px;
+    top: -8px;
+    right: 5px;
+}
+
+@keyframes cloudMove {
+    0% { right: -80px; }
+    100% { right: 100%; }
+}
+
+/* Game UI */
+.game-ui {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #333;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    backdrop-filter: blur(5px);
+}
+
+.game-ui div {
+    margin: 2px 0;
+}
+
+/* Close button - Enhanced visibility */
+.close-game {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+}
+
+.close-game:hover {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff4444;
+    transform: scale(1.1);
+}
+
+/* Pause indicator */
+.pause-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    display: none;
+    backdrop-filter: blur(10px);
+}
+
+/* Game Over Screen */
+.game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(20, 20, 40, 0.95));
+    color: white;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    animation: fadeIn 0.5s ease-out;
+    z-index: 999;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.game-over h3 {
+    font-size: 2.5rem;
+    margin: 0 0 20px 0;
+    background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+}
+
+.game-over .score-display {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.game-over .score-display p {
+    margin: 8px 0;
+    font-size: 1.2rem;
+}
+
+.game-over .final-score {
+    color: #4ecdc4;
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.game-over .final-high-score {
+    color: #ffe66d;
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.game-over .button-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.game-over button {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.game-over button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.game-over .close-btn {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.game-over .close-btn:hover {
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+/* Start message */
+.start-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 40, 0.9));
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.02); }
+}
+
+/* Header layout */
+.header-section {
+    text-align: left;
+    margin-bottom: 1.5em;
+}
+
+.mario-container {
+    margin-bottom: 0.1rem;
+}
+
 .mt-4 {
     margin-top: 1rem;
 }
 
-/* Custom styles */
-.flex {
-    display: flex;
+#marioGame {
+    display: none;
 }
 
-.flex-col {
-    flex-direction: column;
+/* Progress bar */
+.progress-bar {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    right: 15px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    overflow: hidden;
 }
 
-.items-left {
-    align-items: flex-start;
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4ecdc4, #44a08d);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 3px;
 }
 
-.justify-center {
-    justify-content: center;
+/* Work experience styling */
+.work-title {
+    font-weight: bold;
+    color: #37352f;
 }
-
-/* Text styles */
-.text-2xl {
-    font-size: 1.5rem;
-}
-
-.font-bold {
-    font-weight: 700;
-}
-
-/* Description style */
-.description {
-    color: #808080; /* Gray color */
-}
-
-/* Adjust container for Mario and name */
-.tooltip-mario-container {
-    display: inline-block; /* Ensure Mario stays inline */
-    vertical-align: middle; /* Align with the text */
-    margin-right: 10px; /* Add some spacing between Mario and the name */
-}
-
-h1 {
-    display: inline-block; /* Make the heading inline with Mario */
-    font-size: 2.25rem;
-    margin: 0; /* Remove default margin */
-    vertical-align: middle; /* Align with Mario */
-}
-
-
-
-
