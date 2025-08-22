@@ -4,7 +4,621 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarabjot's portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+      /* Base styles */
+      body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+          color: #37352f;
+          background-color: #ffffff;
+          line-height: 1.5;
+          margin: 0;
+          padding: 0;
+      }
+
+      .containerss {
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 2rem;
+      }
+      /* Header Mario icon - Subtle game-like hover animations */
+      .mario-header {
+          width: 48px;
+          height: 48px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: inline-block;
+          position: relative;
+          border-radius: 8px;
+          padding: 4px;
+      }
+
+      /* Subtle hover effects */
+      .mario-header:hover {
+          transform: scale(1.05);
+          background: rgba(74, 144, 226, 0.08);
+          box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+      }
+
+      /* Very subtle pulse on hover */
+      .mario-header:hover::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border: 1px solid rgba(74, 144, 226, 0.3);
+          border-radius: 8px;
+          animation: subtlePulse 2s infinite;
+      }
+
+      /* Gentle bounce for the SVG on hover */
+      .mario-header:hover svg {
+          animation: gentleBounce 1s ease-in-out infinite;
+      }
+
+      /* Subtle pulse animation */
+      @keyframes subtlePulse {
+          0%, 100% {
+              opacity: 0.3;
+              transform: scale(1);
+          }
+          50% {
+              opacity: 0.1;
+              transform: scale(1.02);
+          }
+      }
+
+      /* Gentle bounce animation */
+      @keyframes gentleBounce {
+          0%, 100% {
+              transform: translateY(0);
+          }
+          50% {
+              transform: translateY(-2px);
+          }
+      }
+
+      /* Keep the original legs animation but make it more subtle */
+      .mario-header svg {
+          width: 48px;
+          height: 48px;
+          animation: legsMove 0.8s steps(4) infinite;
+          transform-origin: center bottom;
+          transition: all 0.3s ease;
+      }
+
+      /* Original legs animation remains the same */
+      @keyframes legsMove {
+          0% {
+              transform: translateY(0) scaleY(1);
+          }
+          25% {
+              transform: translateY(-2px) scaleY(0.95);
+          }
+          50% {
+              transform: translateY(0) scaleY(1);
+          }
+          75% {
+              transform: translateY(1px) scaleY(1.05);
+          }
+          100% {
+              transform: translateY(0) scaleY(1);
+          }
+      }
+
+      /* Typography */
+      h1, h2, h4, h5, h6 {
+          margin-top: 0.5em;
+          margin-bottom: 0.2em;
+          font-weight: 600;
+      }
+
+      /* Typography */
+      h3 {
+          margin-top: 1em; /* Reduced from default to tighten spacing */
+          margin-bottom: 0.2em;
+          font-weight: 600;
+      }
+
+      h1 {
+          font-size: 2.25rem;
+          margin-top: 0em;
+          margin-bottom: 0.2em;
+          text-align: left;
+      }
+
+      p {
+          margin-top: 0.1em;
+          margin-bottom: 1em;
+      }
+
+      /* Lists */
+      ul, ol {
+          margin-bottom: 1em;
+      }
+
+      .list-disc {
+          list-style-type: '>  ';
+          padding-left: 1.5rem;
+      }
+
+      /* Links */
+      a {
+          color: #1a73e8;
+          text-decoration: none;
+      }
+
+      a:hover {
+          text-decoration: underline;
+      }
+
+      /* Description style */
+      .description {
+          color: #808080;
+      }
+
+      /* Game Container */
+      .game-container {
+          position: relative;
+          width: 100%;
+          height: 250px;
+          border: 3px solid #4a90e2;
+          border-radius: 15px;
+          overflow: hidden;
+          background: linear-gradient(to bottom, #87CEEB 0%, #87CEEB 60%, #90EE90 60%, #90EE90 80%, #8B4513 80%, #8B4513 100%);
+          margin: 20px 0;
+          cursor: pointer;
+          box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+          transition: all 0.3s ease;
+      }
+
+      .game-container:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+      }
+
+      .game-container.shake {
+          animation: shake 0.5s;
+      }
+
+      @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          75% { transform: translateX(5px); }
+      }
+
+      .game-ground {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 20%;
+          background: linear-gradient(to bottom, #8B4513, #654321);
+          border-top: 2px solid #5a3a1a;
+      }
+
+      /* Mario Character */
+      .mario {
+          position: absolute;
+          bottom: 20%;
+          left: 50px;
+          width: 48px;
+          height: 48px;
+          transition: none;
+          z-index: 10;
+          filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+      }
+
+      .mario.jumping {
+          animation: jump 0.6s ease-in-out;
+      }
+
+      @keyframes jump {
+          0% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-100px) rotate(-10deg); }
+          100% { transform: translateY(0) rotate(0deg); }
+      }
+
+      .mario svg {
+          width: 48px;
+          height: 48px;
+      }
+
+      /* Jump particles */
+      .jump-particle {
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          background: #FFD700;
+          border-radius: 50%;
+          pointer-events: none;
+          animation: jumpParticle 0.6s ease-out forwards;
+      }
+
+      @keyframes jumpParticle {
+          0% {
+              transform: scale(1) translateY(0);
+              opacity: 1;
+          }
+          100% {
+              transform: scale(0) translateY(-30px);
+              opacity: 0;
+          }
+      }
+
+      /* Obstacles */
+      .obstacle {
+          position: absolute;
+          bottom: 20%;
+          width: 35px;
+          height: 60px;
+          background: linear-gradient(to bottom, #228B22, #006400);
+          border-radius: 8px 8px 0 0;
+          animation: moveLeft 2s linear infinite;
+          box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+          border: 2px solid #1e6b1e;
+      }
+
+      .obstacle::before {
+          content: '';
+          position: absolute;
+          top: -5px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 25px;
+          height: 10px;
+          background: #32CD32;
+          border-radius: 50%;
+      }
+
+      @keyframes moveLeft {
+          0% { right: -40px; }
+          100% { right: 100%; }
+      }
+
+      /* Coins */
+      .coin {
+          position: absolute;
+          bottom: 35%;
+          width: 20px;
+          height: 20px;
+          background: linear-gradient(45deg, #FFD700, #FFA500);
+          border-radius: 50%;
+          animation: moveLeft 3s linear infinite, coinSpin 1s linear infinite;
+          box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+          border: 2px solid #FF8C00;
+      }
+
+      @keyframes coinSpin {
+          0% { transform: rotateY(0deg); }
+          100% { transform: rotateY(360deg); }
+      }
+
+      /* Clouds */
+      .cloud {
+          position: absolute;
+          background: white;
+          border-radius: 50px;
+          animation: cloudMove 12s linear infinite;
+          opacity: 0.8;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+
+      .cloud::before,
+      .cloud::after {
+          content: '';
+          position: absolute;
+          background: white;
+          border-radius: 50px;
+      }
+
+      .cloud1 {
+          width: 50px;
+          height: 20px;
+          top: 15%;
+          animation-delay: 0s;
+      }
+
+      .cloud1::before {
+          width: 25px;
+          height: 25px;
+          top: -12px;
+          left: 8px;
+      }
+
+      .cloud1::after {
+          width: 35px;
+          height: 25px;
+          top: -10px;
+          right: 8px;
+      }
+
+      .cloud2 {
+          width: 40px;
+          height: 15px;
+          top: 25%;
+          animation-delay: -6s;
+      }
+
+      .cloud2::before {
+          width: 20px;
+          height: 20px;
+          top: -10px;
+          left: 5px;
+      }
+
+      .cloud2::after {
+          width: 25px;
+          height: 20px;
+          top: -8px;
+          right: 5px;
+      }
+
+      @keyframes cloudMove {
+          0% { right: -80px; }
+          100% { right: 100%; }
+      }
+
+      /* Game UI */
+      .game-ui {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          font-family: 'Courier New', monospace;
+          font-weight: bold;
+          color: #333;
+          background: rgba(255, 255, 255, 0.9);
+          padding: 10px 15px;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          backdrop-filter: blur(5px);
+      }
+
+      .game-ui div {
+          margin: 2px 0;
+      }
+
+      /* Close button - Enhanced visibility */
+      .close-game {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          width: 35px;
+          height: 35px;
+          background: rgba(255, 255, 255, 0.9);
+          border: none;
+          border-radius: 50%;
+          cursor: pointer;
+          font-size: 20px;
+          font-weight: bold;
+          color: #666;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          backdrop-filter: blur(5px);
+          z-index: 1000; /* Ensure it's above game over screen */
+      }
+
+      .close-game:hover {
+          background: rgba(255, 0, 0, 0.1);
+          color: #ff4444;
+          transform: scale(1.1);
+      }
+
+      /* Pause indicator */
+      .pause-indicator {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: rgba(0, 0, 0, 0.8);
+          color: white;
+          padding: 20px;
+          border-radius: 15px;
+          font-size: 24px;
+          font-weight: bold;
+          display: none;
+          backdrop-filter: blur(10px);
+      }
+
+      /* Game Over Screen */
+      .game-over {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(20, 20, 40, 0.95));
+          color: white;
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          backdrop-filter: blur(10px);
+          border-radius: 15px;
+          animation: fadeIn 0.5s ease-out;
+          z-index: 999; /* Below close button but above everything else */
+      }
+
+      @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+      }
+
+      .game-over h3 {
+          font-size: 2.5rem;
+          margin: 0 0 20px 0;
+          background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+      }
+
+      .game-over .score-display {
+          background: rgba(255, 255, 255, 0.1);
+          padding: 20px;
+          border-radius: 10px;
+          margin: 20px 0;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .game-over .score-display p {
+          margin: 8px 0;
+          font-size: 1.2rem;
+      }
+
+      .game-over .final-score {
+          color: #4ecdc4;
+          font-weight: bold;
+          font-size: 1.4rem;
+      }
+
+      .game-over .final-high-score {
+          color: #ffe66d;
+          font-weight: bold;
+          font-size: 1.4rem;
+      }
+
+      .game-over .button-container {
+          display: flex;
+          gap: 15px;
+          margin-top: 25px;
+      }
+
+      .game-over button {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+          color: white;
+          border: none;
+          padding: 12px 25px;
+          border-radius: 25px;
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: bold;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .game-over button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .game-over .close-btn {
+          background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+          box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+      }
+
+      .game-over .close-btn:hover {
+          box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+      }
+
+      /* Start message */
+      .start-message {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 40, 0.9));
+          color: white;
+          padding: 25px;
+          border-radius: 15px;
+          text-align: center;
+          font-size: 16px;
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+          0%, 100% { transform: translate(-50%, -50%) scale(1); }
+          50% { transform: translate(-50%, -50%) scale(1.02); }
+      }
+
+      /* Header layout - Now properly aligned left with reduced spacing */
+      .header-section {
+          text-align: left;
+          margin-bottom: 1.5em; /* Reduced from 2em to tighten spacing */
+      }
+
+      .mario-container {
+          margin-bottom: 0.1rem;
+      }
+
+      .mario-header {
+          width: 48px;
+          height: 48px;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+          display: inline-block;
+      }
+
+      .mario-header:hover {
+          transform: scale(1.1);
+      }
+
+      .mario-header svg {
+          width: 48px;
+          height: 48px;
+          animation: legsMove 0.8s steps(4) infinite;
+          transform-origin: center bottom;
+      }
+
+      /* Legs moving animation by subtle vertical moves and slight scaling */
+      @keyframes legsMove {
+          0% {
+              transform: translateY(0) scaleY(1);
+          }
+          25% {
+              transform: translateY(-2px) scaleY(0.95);
+          }
+          50% {
+              transform: translateY(0) scaleY(1);
+          }
+          75% {
+              transform: translateY(1px) scaleY(1.05);
+          }
+          100% {
+              transform: translateY(0) scaleY(1);
+          }
+      }
+
+      .mt-4 {
+          margin-top: 1rem;
+      }
+
+      #marioGame {
+          display: none;
+      }
+
+      /* Progress bar */
+      .progress-bar {
+          position: absolute;
+          bottom: 10px;
+          left: 15px;
+          right: 15px;
+          height: 6px;
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 3px;
+          overflow: hidden;
+      }
+
+      .progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #4ecdc4, #44a08d);
+          width: 0%;
+          transition: width 0.3s ease;
+          border-radius: 3px;
+      }
+
+      /* Work experience styling */
+      .work-title {
+          font-weight: bold;
+          color: #37352f;
+      }
+    </style>
   </head>
   <body class="containerss">
     <div class="header-section">
@@ -185,7 +799,7 @@
         My focus was on creating lightweight models designed for resource-constrained environments, 
         enabling precise audio analysis and restoration, particularly for deployment on devices like smartphones.
       </p>
-    </ul>
+
     
     <h3>My past projects</h3>
     <ul class="list-disc">
@@ -220,13 +834,18 @@
     <h3>My Blogs</h3>
     <ul class="list-disc">
       Work in progress, hopefully will be up soon.
+        <!-- <li><a href="http://github.com/anirudhhramesh/micrograd">ML Training & Inference Engine (from scratch)</a> <span class="description">Re-built PyTorch/Micrograd from first principles. Reviewed derivatives, backprop. Trained a hotdog classifier.</span></li> -->
     </ul>
+
+
+
 
     <h3>Backlog of projects I want to build</h3>
     <ul>
         <li><strong>Decoding Semantic Segmentation</strong>
             <span class="description">
               I am working on the most comprehensive blog explaining semantic segmentation from first principles, covering traditional techniques and modern deep learning architectures with their key contributions, differences, and interpretability through research papers and implementations.
+            
             </span>
         </li>
 
@@ -239,11 +858,339 @@
           </a>, and later transitioned to DDPMs for high-fidelity object removal and semantic image editing.
         </span>
       </li>
+
     </ul>
     <p class="description">Many more things too :)</p>
 
-    <p class="description">This website was last updated on 18st August, 2025.</p>
+    <p class="description">This website was last updated on  18st August, 2025.</p>
 
-    <script src="script.js"></script>
+    <script>
+      // Game variables
+      let gameRunning = false;
+      let gamePaused = false;
+      let score = 0;
+      let coins = 0;
+      let highScore = parseInt(localStorage.getItem('marioHighScore')) || 0;
+      let obstacles = [];
+      let coinElements = [];
+      let gameLoop;
+      let obstacleSpawnLoop;
+      let coinSpawnLoop;
+      let isJumping = false;
+      let gameSpeed = 2;
+
+      // Game elements
+      const mario = document.getElementById('mario');
+      const gameContainer = document.getElementById('marioGame');
+      const scoreElement = document.getElementById('score');
+      const coinsElement = document.getElementById('coins');
+      const highScoreElement = document.getElementById('highScore');
+      const gameOverScreen = document.getElementById('gameOver');
+      const startMessage = document.getElementById('startMessage');
+      const pauseIndicator = document.getElementById('pauseIndicator');
+      const progressFill = document.getElementById('progressFill');
+      const headerMario = document.getElementById('headerMario');
+
+      // Initialize high score display
+      highScoreElement.textContent = highScore;
+
+      // Start the game
+      function startGame() {
+        if (headerMario) {
+          headerMario.style.display = 'none';
+        }
+        
+        const game = document.getElementById('marioGame');
+        if (game) {
+          game.style.display = 'block';
+          game.focus();
+          game.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          if (startMessage) startMessage.style.display = 'block';
+          if (gameOverScreen) gameOverScreen.style.display = 'none';
+          
+          setTimeout(initGame, 500);
+        }
+      }
+
+      // Close the game
+      function closeGame() {
+        endGame();
+        const game = document.getElementById('marioGame');
+        if (game) {
+          game.style.display = 'none';
+        }
+        if (headerMario) {
+          headerMario.style.display = 'block';
+        }
+      }
+
+      // Initialize game
+      function initGame() {
+        if (gameRunning) return;
+        
+        gameRunning = true;
+        gamePaused = false;
+        score = 0;
+        coins = 0;
+        gameSpeed = 1;
+        obstacles = [];
+        coinElements = [];
+        isJumping = false;
+        
+        startMessage.style.display = 'none';
+        gameOverScreen.style.display = 'none';
+        pauseIndicator.style.display = 'none';
+        
+        mario.className = 'mario';
+        mario.style.left = '50px';
+        
+        document.querySelectorAll('.obstacle, .coin, .jump-particle').forEach(el => el.remove());
+        
+        updateScore();
+        updateProgress();
+        
+        gameLoop = setInterval(updateGame, 16);
+        obstacleSpawnLoop = setInterval(spawnObstacle, 2000);
+        coinSpawnLoop = setInterval(spawnCoin, 3000);
+      }
+
+      // Create jump particles
+      function createJumpParticles() {
+        for (let i = 0; i < 5; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'jump-particle';
+          particle.style.left = (parseInt(mario.style.left) + Math.random() * 48) + 'px';
+          particle.style.bottom = '20%';
+          gameContainer.appendChild(particle);
+          
+          setTimeout(() => {
+            if (particle.parentNode) {
+              particle.remove();
+            }
+          }, 600);
+        }
+      }
+
+      // Make Mario jump
+      function jump() {
+        if (!gameRunning) {
+          initGame();
+          return;
+        }
+        
+        if (gamePaused || isJumping) return;
+        
+        isJumping = true;
+        mario.classList.add('jumping');
+        createJumpParticles();
+        
+        setTimeout(() => {
+          mario.classList.remove('jumping');
+          isJumping = false;
+        }, 600);
+      }
+
+      // Spawn obstacle
+      function spawnObstacle() {
+        if (!gameRunning || gamePaused) return;
+        
+        const obstacle = document.createElement('div');
+        obstacle.className = 'obstacle';
+        obstacle.style.animationDuration = (2 / gameSpeed) + 's';
+        gameContainer.appendChild(obstacle);
+        obstacles.push(obstacle);
+        
+        setTimeout(() => {
+          if (obstacle.parentNode) {
+            obstacle.remove();
+            obstacles = obstacles.filter(obs => obs !== obstacle);
+            if (gameRunning) {
+              score++;
+              updateScore();
+              updateProgress();
+              
+              if (score % 5 === 0 && gameSpeed < 4) {
+                gameSpeed += 0.1;
+                clearInterval(obstacleSpawnLoop);
+                obstacleSpawnLoop = setInterval(spawnObstacle, Math.max(1000, 2000 - score * 15));
+              }
+            }
+          }
+        }, (2 / gameSpeed) * 1000);
+      }
+
+      // Spawn coin
+      function spawnCoin() {
+        if (!gameRunning || gamePaused) return;
+        
+        const coin = document.createElement('div');
+        coin.className = 'coin';
+        coin.style.animationDuration = (3 / gameSpeed) + 's';
+        gameContainer.appendChild(coin);
+        coinElements.push(coin);
+        
+        setTimeout(() => {
+          if (coin.parentNode) {
+            coin.remove();
+            coinElements = coinElements.filter(c => c !== coin);
+          }
+        }, (3 / gameSpeed) * 1000);
+      }
+
+      // Update game state
+      function updateGame() {
+        if (!gameRunning || gamePaused) return;
+        
+        checkCollisions();
+        checkCoinCollection();
+      }
+
+      // Check for collisions
+      function checkCollisions() {
+        const marioRect = mario.getBoundingClientRect();
+        
+        obstacles.forEach(obstacle => {
+          const obstacleRect = obstacle.getBoundingClientRect();
+          
+          if (obstacleRect.right > marioRect.left && 
+              obstacleRect.left < marioRect.right &&
+              obstacleRect.bottom > marioRect.top &&
+              obstacleRect.top < marioRect.bottom) {
+            
+            gameContainer.classList.add('shake');
+            setTimeout(() => gameContainer.classList.remove('shake'), 500);
+            endGame();
+          }
+        });
+      }
+
+      // Check coin collection
+      function checkCoinCollection() {
+        const marioRect = mario.getBoundingClientRect();
+        
+        coinElements.forEach((coin, index) => {
+          const coinRect = coin.getBoundingClientRect();
+          
+          if (coinRect.right > marioRect.left && 
+              coinRect.left < marioRect.right &&
+              coinRect.bottom > marioRect.top &&
+              coinRect.top < marioRect.bottom) {
+            
+            coin.remove();
+            coinElements.splice(index, 1);
+            coins++;
+            score += 2;
+            updateScore();
+            updateProgress();
+          }
+        });
+      }
+
+      // Update progress bar
+      function updateProgress() {
+        const progress = Math.min((score / 50) * 100, 100);
+        progressFill.style.width = progress + '%';
+      }
+
+      // End the game
+      function endGame() {
+        gameRunning = false;
+        gamePaused = false;
+        
+        clearInterval(gameLoop);
+        clearInterval(obstacleSpawnLoop);
+        clearInterval(coinSpawnLoop);
+        
+        if (score > highScore) {
+          highScore = score;
+          localStorage.setItem('marioHighScore', highScore);
+          highScoreElement.textContent = highScore;
+        }
+        
+        document.getElementById('finalScore').textContent = score;
+        document.getElementById('finalCoins').textContent = coins;
+        document.getElementById('finalHighScore').textContent = highScore;
+        gameOverScreen.style.display = 'flex';
+        
+        setTimeout(() => {
+          obstacles.forEach(obs => obs.remove());
+          coinElements.forEach(coin => coin.remove());
+          obstacles = [];
+          coinElements = [];
+        }, 100);
+      }
+
+      // Restart the game
+      function restartGame() {
+        endGame();
+        setTimeout(initGame, 100);
+      }
+
+      // Update score display
+      function updateScore() {
+        scoreElement.textContent = score;
+        coinsElement.textContent = coins;
+      }
+
+      // Toggle pause
+      function togglePause() {
+        if (!gameRunning) return;
+        
+        gamePaused = !gamePaused;
+        
+        if (gamePaused) {
+          pauseIndicator.style.display = 'block';
+          obstacles.forEach(obs => {
+            obs.style.animationPlayState = 'paused';
+          });
+          coinElements.forEach(coin => {
+            coin.style.animationPlayState = 'paused';
+          });
+          document.querySelectorAll('.cloud').forEach(cloud => {
+            cloud.style.animationPlayState = 'paused';
+          });
+        } else {
+          pauseIndicator.style.display = 'none';
+          obstacles.forEach(obs => {
+            obs.style.animationPlayState = 'running';
+          });
+          coinElements.forEach(coin => {
+            coin.style.animationPlayState = 'running';
+          });
+          document.querySelectorAll('.cloud').forEach(cloud => {
+            cloud.style.animationPlayState = 'running';
+          });
+        }
+      }
+
+      // Event listeners
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+          e.preventDefault();
+          jump();
+        } else if (e.code === 'Escape') {
+          e.preventDefault();
+          if (gameRunning) {
+            togglePause();
+          } else {
+            closeGame();
+          }
+        }
+      });
+
+      gameContainer.addEventListener('click', (e) => {
+        if (e.target === gameContainer || e.target.closest('.mario')) {
+          jump();
+        }
+      });
+
+      gameContainer.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+          e.preventDefault();
+          jump();
+        }
+      });
+    </script>
   </body>
 </html>
